@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["group_name"])) {
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["user_login"])) {
     $user_id = isset($_POST["user_id"]) ? $_POST["user_id"] : null;
     $user_login = $_POST["user_login"];
-    $user_password = $_POST["user_password"];
+    $user_password = md5($_POST["user_password"]); // Хешируем пароль
     $user_group = $_POST["user_group"];
 
     // Проверяем, существует ли выбранная группа
@@ -67,6 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["user_login"])) {
 $stmt = $conn->prepare("SELECT id, name FROM groups");
 $stmt->execute();
 $groups_result = $stmt->get_result();
+$groups = $groups_result->fetch_all(MYSQLI_ASSOC);
 
 // Получение списка пользователей для выпадающего списка
 $stmt = $conn->prepare("SELECT u.id, u.login, u.group_id, g.name AS group_name
@@ -80,8 +81,8 @@ echo "<h2>Управление группами</h2>";
 echo "<form method='post' action='" . htmlspecialchars($_SERVER["PHP_SCRIPT"]) . "'>";
 echo "Выберите группу: <select name='group_id'>";
 echo "<option value=''>Создать новую группу</option>";
-while ($row = $groups_result->fetch_assoc()) {
-    echo "<option value='" . $row["id"] . "'>" . $row["name"] . "</option>";
+foreach ($groups as $group) {
+    echo "<option value='" . $group["id"] . "'>" . $group["name"] . "</option>";
 }
 echo "</select><br>";
 echo "Название группы: <input type='text' name='group_name'><br>";
@@ -102,9 +103,9 @@ echo "Логин: <input type='text' name='user_login'><br>";
 echo "Пароль: <input type='password' name='user_password'><br>";
 echo "Группа: <select name='user_group'>";
 echo "<option value=''>Выберите группу</option>";
-while ($row = $groups_result->fetch_assoc()) {
-    $selected = ($row["id"] == $users_result->fetch_assoc()["group_id"]) ? "selected" : "";
-    echo "<option value='" . $row["id"] . "' $selected>" . $row["name"] . "</option>";
+foreach ($groups as $group) {
+    $selected = ($group["id"] == $users_result->fetch_assoc()["group_id"]) ? "selected" : "";
+    echo "<option value='" . $group["id"] . "' $selected>" . $group["name"] . "</option>";
 }
 echo "</select><br>";
 echo "<input type='submit' value='Сохранить'>";

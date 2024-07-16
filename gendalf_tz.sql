@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Июл 16 2024 г., 14:05
+-- Время создания: Июл 16 2024 г., 16:25
 -- Версия сервера: 10.5.11-MariaDB
 -- Версия PHP: 7.1.33
 
@@ -61,8 +61,7 @@ CREATE TABLE `groups` (
 
 INSERT INTO `groups` (`id`, `name`, `description`) VALUES
 (1, 'admin', 'Администратор'),
-(2, 'user1', 'user1'),
-(3, '1', '1');
+(2, 'user', 'user');
 
 -- --------------------------------------------------------
 
@@ -108,9 +107,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `login`, `password`, `group_id`) VALUES
 (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 1),
-(2, 'user2', 'newpassword2', 2),
-(3, 'user1', 'password1', 1),
-(4, 'user1', 'password1', 1);
+(2, 'user', 'ee11cbb19052e40b07aac0ca060c23ee', 2);
 
 --
 -- Индексы сохранённых таблиц
@@ -169,7 +166,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц

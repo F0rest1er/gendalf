@@ -113,3 +113,5 @@ echo "</form>";
 
 $conn->close();
 ?>
+
+<button><a href="function.php" style="text-decoration: none; color: black;">Выбор функции</a></button>
